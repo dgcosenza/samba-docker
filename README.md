@@ -25,11 +25,20 @@ A hardened, multi-arch **Samba (SMB3)** file server container image on **Debian 
 <!-- versions:start -->
 | Component | Resolved Version |
 | --- | --- |
-| Samba | `4.22.11` |
-| Base OS | `Debian 13 (trixie-slim)` |
+| Samba | `4.22.11 (2:4.22.11+dfsg-0+deb13u1)` |
+| Base OS | `Debian 13.8 (trixie-slim)` |
 | Architectures | `linux/amd64, linux/arm64` |
+| Uncompressed size (per arch) | `amd64: 67.8 MB, arm64: 214.4 MB` |
 | Last verified build (UTC) | `2026-11-25` |
-| Security gate (Trivy + Grype on SBOM) | **0 fixable Critical/High** |
+| Published multi-arch digest | `dgcosenza/samba@sha256:27901c0142200ac3b5458b2f0c87a8f5457b74963e8b023545009018c89a07eb` |
+| GHCR mirror | `ghcr.io/dgcosenza/samba@sha256:27901c0142200ac3b5458b2f0c87a8f5457b74963e8b023545009018c89a07eb` |
+| Supply chain | Cosign OIDC signed + SPDX & CycloneDX SBOM attestations + SLSA Build L3 provenance |
+| Security gate (Trivy + Grype on SBOM) | **0 fixable Critical/High** (32 upstream-unfixed) |
+
+**Recent upstream changes:**
+- **Samba:** `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`) -> `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`)
+- **Upstream version changed:** `no`
+- Official Debian 13 (trixie) Samba package `2:4.22.11+dfsg-0+deb13u1` (upstream Samba `4.22.11`).
 <!-- versions:end -->
 
 ---
