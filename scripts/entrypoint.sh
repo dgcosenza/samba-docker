@@ -80,13 +80,17 @@ while IFS='=' read -r var gid; do
     fi
 done < <(env | grep '^GROUP_' || true)
 
+# Pre-create smbpasswd with strict 0600 permissions so Samba never emits 0644 warnings
+install -m 0600 /dev/null /etc/samba/smbpasswd
+install -m 0600 /dev/null /var/lib/samba/private/smbpasswd
+
 # Create user accounts (ACCOUNT_<name>=<password-or-smbpasswd-hash>, UID_<name>=<uid>)
-ACCOUNT_VARS=()
+SMB_ACCOUNT_VARS=()
 while IFS= read -r var; do
-    [ -n "${var}" ] && ACCOUNT_VARS+=("${var}")
+    [ -n "${var}" ] && SMB_ACCOUNT_VARS+=("${var}")
 done < <(compgen -v ACCOUNT_ || true)
 
-for var in "${ACCOUNT_VARS[@]}"; do
+for var in "${SMB_ACCOUNT_VARS[@]}"; do
     raw_name="${var#ACCOUNT_}"
     account_name="$(printf '%s' "${raw_name}" | tr '[:upper:]' '[:lower:]')"
     account_pass="${!var}"
@@ -117,9 +121,11 @@ for var in "${ACCOUNT_VARS[@]}"; do
         echo ">> ACCOUNT: loading pre-hashed SMB credentials for ${account_name}"
         smbpasswd -a -n "${account_name}" >/dev/null
         clean_hash="$(printf '%s' "${account_pass}" | sed 's/^[^:]*:[0-9]*://')"
-        if [ -f /var/lib/samba/private/smbpasswd ]; then
-            sed -i "s|^\(${account_name}:[0-9]*:\).*|\1${clean_hash}|" /var/lib/samba/private/smbpasswd
-        fi
+        for pwf in /etc/samba/smbpasswd /var/lib/samba/private/smbpasswd; do
+            if [ -f "${pwf}" ] && grep -q "^${account_name}:" "${pwf}"; then
+                sed -i "s|^\(${account_name}:[0-9]*:\).*|\1${clean_hash}|" "${pwf}"
+            fi
+        done
     else
         printf '%s\n%s\n' "${account_pass}" "${account_pass}" | smbpasswd -s -a "${account_name}" >/dev/null
     fi
@@ -141,7 +147,7 @@ done
 
 # Harden Samba password database permissions (avoid 0644 warning on smbpasswd)
 chmod 0700 /var/lib/samba/private
-for dbfile in /var/lib/samba/private/smbpasswd /var/lib/samba/private/passdb.tdb /var/lib/samba/private/secrets.tdb; do
+for dbfile in /etc/samba/smbpasswd /var/lib/samba/private/smbpasswd /var/lib/samba/private/passdb.tdb /var/lib/samba/private/secrets.tdb; do
     [ -f "${dbfile}" ] && chmod 0600 "${dbfile}"
 done
 

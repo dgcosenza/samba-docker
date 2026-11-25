@@ -62,12 +62,16 @@ docker exec "${CONTAINER_NAME}" sh -c "printf 'hello-smb\n' > /tmp/probe.txt && 
 echo "OK: Authenticated SMB read/write succeeded"
 
 echo "Verifying smbpasswd permissions (must be 600)..."
-SMBPASS_PERMS="$(docker exec "${CONTAINER_NAME}" stat -c '%a' /var/lib/samba/private/smbpasswd)"
-if [ "${SMBPASS_PERMS}" != "600" ]; then
-    echo "ERROR: /var/lib/samba/private/smbpasswd mode is ${SMBPASS_PERMS}, expected 600"
-    exit 1
-fi
-echo "OK: smbpasswd mode is 600"
+for pwf in /etc/samba/smbpasswd /var/lib/samba/private/smbpasswd; do
+    if docker exec "${CONTAINER_NAME}" test -f "${pwf}"; then
+        SMBPASS_PERMS="$(docker exec "${CONTAINER_NAME}" stat -c '%a' "${pwf}")"
+        if [ "${SMBPASS_PERMS}" != "600" ]; then
+            echo "ERROR: ${pwf} mode is ${SMBPASS_PERMS}, expected 600"
+            exit 1
+        fi
+        echo "OK: ${pwf} mode is 600"
+    fi
+done
 
 echo "Verifying ACCOUNT_testuser was scrubbed from smbd process environment..."
 if docker exec "${CONTAINER_NAME}" sh -c 'tr "\0" "\n" < /proc/$(pgrep -o smbd)/environ | grep -q "^ACCOUNT_testuser="'; then
