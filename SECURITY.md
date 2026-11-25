@@ -16,4 +16,6 @@ Only the latest daily build (`latest`) receives security updates. Immutable date
 
 **Do not open a public issue** for security vulnerabilities.
 
-Report privately through GitHub's private vulnerability reporting: open the repository's **Security** tab and select **Report a vulnerability**.
+Report privately through GitHub Security Advisories: open the repository's **Security** tab or submit a private advisory directly at [dgcosenza/samba-docker Security Advisories](https://github.com/dgcosenza/samba-docker/security/advisories/new).
+
+For upstream Samba vulnerabilities, follow the [Samba Security Process](https://www.samba.org/samba/security/).
