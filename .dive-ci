@@ -1,0 +1,7 @@
+# Efficiency gate (overall >= 95% strict).
+# highestUserWastedPercent is tuned to 0.15 (from 0.05) because daily
+# `apt-get -y upgrade` and `debconf` metadata updates on `debian:trixie-slim`
+# necessarily overwrite ~5 MB of base-layer files against a compact Samba layer.
+rules:
+  lowestEfficiency: 0.95
+  highestUserWastedPercent: 0.15

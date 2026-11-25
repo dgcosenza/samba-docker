@@ -4,15 +4,17 @@
 # Env-driven config parity inspired by ServerContainers/samba
 # Maintainer: Daniel G. Cosenza from FNX Labs
 
-ARG DEBIAN_VERSION=trixie-slim
+ARG DEBIAN_BASE=debian:trixie-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0
+ARG SAMBA_VERSION=4.22
 ARG IMAGE_CREATED=1970-01-01T00:00:00Z
 ARG IMAGE_REVISION=dev
 ARG IMAGE_SOURCE=https://github.com/dgcosenza/samba-docker
 
-FROM debian:${DEBIAN_VERSION} AS runtime
+FROM ${DEBIAN_BASE} AS runtime
 
-ARG DEBIAN_VERSION
-ARG SAMBA_VERSION=4.22
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ARG SAMBA_VERSION
 ARG IMAGE_CREATED
 ARG IMAGE_REVISION
 ARG IMAGE_SOURCE
@@ -28,8 +30,8 @@ LABEL org.opencontainers.image.title="Samba File Server on Debian 13 (trixie)" \
       org.opencontainers.image.documentation="${IMAGE_SOURCE}#readme" \
       org.opencontainers.image.vendor="Daniel G. Cosenza from FNX Labs" \
       org.opencontainers.image.authors="Daniel G. Cosenza from FNX Labs" \
-      org.opencontainers.image.licenses="GPL-3.0-or-later" \
-      org.opencontainers.image.base.name="docker.io/library/debian:${DEBIAN_VERSION}" \
+      org.opencontainers.image.licenses="GPL-3.0-or-later AND MIT" \
+      org.opencontainers.image.base.name="debian:trixie-slim" \
       io.github.dgcosenza.samba.version="${SAMBA_VERSION}"
 
 RUN set -eux; \
@@ -45,7 +47,8 @@ RUN set -eux; \
         tini \
         tzdata \
         wsdd2; \
-    rm -rf /var/lib/apt/lists/*; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
     \
     # Configure Avahi to run without D-Bus inside a container \
     sed -i 's/^#*enable-dbus=.*/enable-dbus=no/' /etc/avahi/avahi-daemon.conf; \
@@ -56,11 +59,10 @@ RUN set -eux; \
     smbd --version; \
     smbclient --version
 
-COPY config/smb.conf.default /container/config/smb.conf.default
-COPY config/samba.service /container/config/samba.service
-COPY scripts/entrypoint.sh /container/scripts/entrypoint.sh
-COPY scripts/samba_create_user_dir.sh /container/scripts/samba_create_user_dir.sh
-RUN chmod 0755 /container/scripts/entrypoint.sh /container/scripts/samba_create_user_dir.sh
+COPY --chmod=0644 config/smb.conf.default /container/config/smb.conf.default
+COPY --chmod=0644 config/samba.service /container/config/samba.service
+COPY --chmod=0755 scripts/entrypoint.sh /container/scripts/entrypoint.sh
+COPY --chmod=0755 scripts/samba_create_user_dir.sh /container/scripts/samba_create_user_dir.sh
 
 ENV PATH="/container/scripts:${PATH}" \
     TZ=UTC

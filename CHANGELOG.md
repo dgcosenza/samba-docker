@@ -8,12 +8,16 @@ Maintained by **Daniel G. Cosenza from FNX Labs**.
 
 ## [Unreleased]
 
+<!-- changelog:auto -->
+
+---
+
 ## [2026-11-24]
 
 ### Added
 - Initial hardened Samba (SMB3) file server image on Debian 13 (`trixie-slim`) with native Debian `samba`, `smbclient`, `wsdd2`, `avahi-daemon`, and `tini`.
 - Full env-driven configuration compatibility (`ACCOUNT_*`, `UID_*`, `GROUP_*`, `GROUPS_*`, `SAMBA_VOLUME_CONFIG_*`, `SAMBA_CONF_*`, `SAMBA_GLOBAL_*`) plus clean read-only `/etc/samba/smb.conf:ro` mount support.
-- Functional `smbclient -L 127.0.0.1 -N` healthcheck, smoke test suite, and 7-step automated daily CI pipeline.
+- Functional `smbclient -L 127.0.0.1 -N` healthcheck, smoke test suite, multi-arch (`linux/amd64`, `linux/arm64`), Cosign OIDC signing, SPDX/CycloneDX SBOM attestations, SLSA Build L3 provenance, dual-registry publishing (GHCR + Docker Hub), and automated daily CI pipeline.
 
 ### Security
 - Enforced `0600` permissions on `/var/lib/samba/private/smbpasswd` (and `0700` on `/var/lib/samba/private`) and scrubbed `ACCOUNT_*` secrets before `exec smbd`.
