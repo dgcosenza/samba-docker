@@ -20,7 +20,7 @@ Maintained by **Daniel G. Cosenza from FNX Labs**.
   - **Upstream version changed:** `no`
   - Official Debian 13 (trixie) Samba package `2:4.22.11+dfsg-0+deb13u1` (upstream Samba `4.22.11`).
 - Vulnerability gate: **0 fixable Critical/High** in Trivy and Grype (SBOM scan) (32 upstream-unfixed).
-- Published multi-arch digest (Docker Hub + GHCR): `dgcosenza/samba@sha256:b4928d42b45d812819808d7369783c8fa92f465b2d87946394a55e35324b5c23` (Cosign OIDC signed + SPDX/CycloneDX SBOM + SLSA L3 provenance).
+- Published multi-arch digest (Docker Hub + GHCR): `dgcosenza/samba@sha256:bbcf630c7448d88c9f4a2ce9990fdaa42022990f26edc455b1dcc55fc760962f` (Cosign OIDC signed + SPDX/CycloneDX SBOM + SLSA L3 provenance).
 ---
 
 ---

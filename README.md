@@ -30,8 +30,8 @@ A hardened, multi-arch **Samba (SMB3)** file server container image on **Debian 
 | Architectures | `linux/amd64, linux/arm64` |
 | Uncompressed size (per arch) | `amd64: 68.5 MB, arm64: 216.9 MB` |
 | Last verified build (UTC) | `2026-11-25` |
-| Published multi-arch digest | `dgcosenza/samba@sha256:b4928d42b45d812819808d7369783c8fa92f465b2d87946394a55e35324b5c23` |
-| GHCR mirror | `ghcr.io/dgcosenza/samba@sha256:b4928d42b45d812819808d7369783c8fa92f465b2d87946394a55e35324b5c23` |
+| Published multi-arch digest | `dgcosenza/samba@sha256:bbcf630c7448d88c9f4a2ce9990fdaa42022990f26edc455b1dcc55fc760962f` |
+| GHCR mirror | `ghcr.io/dgcosenza/samba@sha256:bbcf630c7448d88c9f4a2ce9990fdaa42022990f26edc455b1dcc55fc760962f` |
 | Supply chain | Cosign OIDC signed + SPDX & CycloneDX SBOM attestations + SLSA Build L3 provenance |
 | Security gate (Trivy + Grype on SBOM) | **0 fixable Critical/High** (32 upstream-unfixed) |
 

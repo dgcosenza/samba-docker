@@ -26,9 +26,9 @@
   "base_digest": "sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0",
   "debian_version": "13.8",
   "build_date": "2026-11-25",
-  "built_at_utc": "2026-11-25T19:14:54Z",
-  "image_digest": "dgcosenza/samba@sha256:b4928d42b45d812819808d7369783c8fa92f465b2d87946394a55e35324b5c23",
-  "ghcr_digest": "ghcr.io/dgcosenza/samba@sha256:b4928d42b45d812819808d7369783c8fa92f465b2d87946394a55e35324b5c23",
+  "built_at_utc": "2026-11-25T21:52:02Z",
+  "image_digest": "dgcosenza/samba@sha256:bbcf630c7448d88c9f4a2ce9990fdaa42022990f26edc455b1dcc55fc760962f",
+  "ghcr_digest": "ghcr.io/dgcosenza/samba@sha256:bbcf630c7448d88c9f4a2ce9990fdaa42022990f26edc455b1dcc55fc760962f",
   "fixable_critical_high": 0,
   "unfixed_cves": [
     "CVE-2019-16224",
