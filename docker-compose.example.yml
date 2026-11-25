@@ -1,0 +1,55 @@
+# Example deployment for dgcosenza/samba
+# Keep credentials in an untracked .env / samba.env file (chmod 600).
+
+services:
+  samba:
+    image: dgcosenza/samba:latest
+    container_name: samba
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    network_mode: host
+    env_file:
+      - ./samba.env
+    environment:
+      TZ: UTC
+      FAIL_FAST: "1"
+      NETBIOS_DISABLE: "1"
+      AVAHI_DISABLE: "1"
+      WSDD2_DISABLE: "1"
+      MODEL: Macmini
+      SAMBA_CONF_LOG_LEVEL: "1"
+      SAMBA_CONF_MAP_TO_GUEST: Never
+      SAMBA_CONF_SERVER_STRING: "Samba File Server"
+      SAMBA_GLOBAL_STANZA: "disable netbios = yes; interfaces = 127.0.0.1/8 192.0.2.10/24; bind interfaces only = yes"
+      SAMBA_VOLUME_CONFIG_data: |
+        [data]
+        comment = Shared storage
+        path = /shares/data
+        valid users = alice
+        guest ok = no
+        read only = no
+        browseable = yes
+        force user = alice
+        force group = alice
+        create mask = 0664
+        directory mask = 0775
+    volumes:
+      - ./smb.conf:/etc/samba/smb.conf:ro
+      - ./shares/data:/shares/data
+    healthcheck:
+      test: ["CMD-SHELL", "smbclient -L 127.0.0.1 -N >/dev/null 2>&1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

@@ -1,0 +1,10 @@
+{
+  "last_updated": "2026-11-24",
+  "debian_version": "13",
+  "samba_version": "4.22.11",
+  "samba_deb_version": "2:4.22.11+dfsg-0+deb13u1",
+  "digest": "pending-hub-publish",
+  "trivy_fixable_critical_high": 0,
+  "grype_fixable_critical_high": 0,
+  "cves_seen": []
+}

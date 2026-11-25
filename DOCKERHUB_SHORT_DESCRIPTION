@@ -1,0 +1,1 @@
+Hardened Samba (SMB3) file server on Debian 13 (trixie) with env-driven setup and daily CVE gates.
