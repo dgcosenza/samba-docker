@@ -33,7 +33,7 @@ A hardened, multi-arch **Samba (SMB3)** file server container image on **Debian 
 | Published multi-arch digest | `dgcosenza/samba@sha256:c3e3e134a01019a02f42e7bf820cf696e408eb371bfb0c0267478c94d5c8e384` |
 | GHCR mirror | `ghcr.io/dgcosenza/samba@sha256:c3e3e134a01019a02f42e7bf820cf696e408eb371bfb0c0267478c94d5c8e384` |
 | Supply chain | Cosign OIDC signed + SPDX & CycloneDX SBOM attestations + SLSA Build L3 provenance |
-| Security gate (Trivy + Grype on SBOM) | **0 fixable Critical/High** (32 upstream-unfixed) |
+| Security gate (Trivy + Grype on SBOM) | **0 fixable findings of any severity** (32 upstream-unfixed) |
 
 **Recent upstream changes:**
 - **Samba:** `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`) -> `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`)
@@ -238,7 +238,7 @@ gh attestation verify oci://ghcr.io/dgcosenza/samba:latest --owner dgcosenza
 ## Security
 
 - **Preflight gates:** Every push and PR runs **Hadolint** (blocking on warning+), **Gitleaks** secret scanning across git history, and **public-content/attribution** checks.
-- **Vulnerability scan policy:** Every build generates **SPDX** and **CycloneDX** SBOMs with **Syft** per architecture, scans with **Trivy** (table, JSON, SARIF upload, blocking `--ignore-unfixed` gate) and **Grype** scanning the SPDX SBOM (`--only-fixed --fail-on high`), and enforces a **Dive** efficiency gate (`>= 95%`).
+- **Vulnerability scan policy (all severities with a fix):** Every build generates **SPDX** and **CycloneDX** SBOMs with **Syft** per architecture, scans with **Trivy** (table, JSON, SARIF upload, blocking `--ignore-unfixed` gate) and **Grype** scanning the SPDX SBOM (`--only-fixed --fail-on negligible`), and enforces a **Dive** efficiency gate (`>= 95%`).
 - **Runtime hardening:** `0600` `smbpasswd`, `0700` `/var/lib/samba/private`, `ACCOUNT_*` scrubbed from `smbd` environment, `tini` PID 1, `no-new-privileges:true` compatible.
 - **Dependency automation:** Renovate (`renovate.json`) pins base image digests and GitHub Action commit SHAs; Dependabot security alerts and OpenSSF Scorecard monitoring are enabled.
 - See [`SECURITY.md`](https://github.com/dgcosenza/samba-docker/blob/main/SECURITY.md) for responsible disclosure.
@@ -259,7 +259,7 @@ docker buildx build --platform linux/amd64 --load -t dgcosenza/samba:local .
 
 1. **Preflight & upstream check:** Runs public-content checks, **Hadolint**, and **Gitleaks**; queries Debian 13 (`trixie`, `trixie-updates`, `trixie-security`) APT feeds for the latest Samba package and resolves the latest `debian:trixie-slim` digest, emitting `upstream-changes.md`.
 2. **Multi-arch no-cache rebuild:** Rebuilds natively on `linux/amd64` and `linux/arm64` runners with `--no-cache` on schedule and `apt-get upgrade`.
-3. **Smoke, Dive & vulnerability gates:** Runs [`tests/smoke.sh`](https://github.com/dgcosenza/samba-docker/blob/main/tests/smoke.sh) natively on both architectures, enforces the **Dive** efficiency gate (`>= 95%`), generates **Syft** SPDX + CycloneDX SBOMs per arch, and gates publication on **0 fixable Critical/High** in both **Trivy** and **Grype** (scanning the SPDX SBOM).
+3. **Smoke, Dive & vulnerability gates:** Runs [`tests/smoke.sh`](https://github.com/dgcosenza/samba-docker/blob/main/tests/smoke.sh) natively on both architectures, enforces the **Dive** efficiency gate (`>= 95%`), generates **Syft** SPDX + CycloneDX SBOMs per arch, and gates publication on **0 fixable findings of any severity** in both **Trivy** and **Grype** (scanning the SPDX SBOM).
 4. **Dual-registry publish & supply-chain signing:** Assembles the multi-arch OCI manifest index on **GHCR** (`ghcr.io/dgcosenza/samba`) and mirrors the identical digest to **Docker Hub** (`dgcosenza/samba`) with tags `latest`, `<version>`, `<version>-<YYYYMMDD>`, and `sha-<short>`; signs every digest and attaches SPDX/CycloneDX SBOM attestations via **Cosign** keyless OIDC; emits **SLSA Build L3** provenance; and publishes a signed **GitHub Release** with checksums and SBOMs.
 5. **Automated documentation sync:** Commits updated `versions.json`, the README `Current Versions` block, and a dated `CHANGELOG.md` entry via `github-actions[bot]` (`[skip ci]`, validated by `public-check.sh`), then syncs the Docker Hub overview and short description.
 6. **Failure alerting:** Opens or updates a single GitHub issue labeled `ci-failure` on any `main` or scheduled failure, and auto-closes it on the next green run.
