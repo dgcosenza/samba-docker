@@ -29,11 +29,11 @@ A hardened, multi-arch **Samba (SMB3)** file server container image on **Debian 
 | Base OS | `Debian 13.8 (trixie-slim)` |
 | Architectures | `linux/amd64, linux/arm64` |
 | Uncompressed size (per arch) | `amd64: 68.5 MB, arm64: 216.9 MB` |
-| Last verified build (UTC) | `2026-11-25` |
-| Published multi-arch digest | `dgcosenza/samba@sha256:c3e3e134a01019a02f42e7bf820cf696e408eb371bfb0c0267478c94d5c8e384` |
-| GHCR mirror | `ghcr.io/dgcosenza/samba@sha256:c3e3e134a01019a02f42e7bf820cf696e408eb371bfb0c0267478c94d5c8e384` |
+| Last verified build (UTC) | `2026-11-26` |
+| Published multi-arch digest | `dgcosenza/samba@sha256:6735d3406244c8c10f29c5e82be23f98aac9018a7d1a4cb00c8df7a665cb5027` |
+| GHCR mirror | `ghcr.io/dgcosenza/samba@sha256:6735d3406244c8c10f29c5e82be23f98aac9018a7d1a4cb00c8df7a665cb5027` |
 | Supply chain | Cosign OIDC signed + SPDX & CycloneDX SBOM attestations + SLSA Build L3 provenance |
-| Security gate (Trivy + Grype on SBOM) | **0 fixable findings of any severity** (32 upstream-unfixed) |
+| Security gate (Trivy + Grype on SBOM) | **0 fixable Critical/High** (32 upstream-unfixed) |
 
 **Recent upstream changes:**
 - **Samba:** `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`) -> `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`)

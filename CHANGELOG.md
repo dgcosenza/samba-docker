@@ -10,6 +10,20 @@ Maintained by **Daniel G. Cosenza from FNX Labs**.
 
 <!-- changelog:auto -->
 
+## [4.22.11] — 2026-11-26
+
+### Automated Daily Build
+- Verified components: Samba `4.22.11 (2:4.22.11+dfsg-0+deb13u1)`, Base OS `Debian 13.8 (trixie-slim)`.
+- Architectures verified: `linux/amd64, linux/arm64` (native smoke tests + Dive efficiency gate).
+- Upstream changes:
+  - **Samba:** `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`) -> `4.22.11` (`2:4.22.11+dfsg-0+deb13u1`)
+  - **Upstream version changed:** `no`
+  - Official Debian 13 (trixie) Samba package `2:4.22.11+dfsg-0+deb13u1` (upstream Samba `4.22.11`).
+- Vulnerability gate: **0 fixable Critical/High** in Trivy and Grype (SBOM scan) (32 upstream-unfixed).
+- Published multi-arch digest (Docker Hub + GHCR): `dgcosenza/samba@sha256:6735d3406244c8c10f29c5e82be23f98aac9018a7d1a4cb00c8df7a665cb5027` (Cosign OIDC signed + SPDX/CycloneDX SBOM + SLSA L3 provenance).
+
+---
+
 ## [4.22.11] — 2026-11-25
 
 ### Automated Daily Build
